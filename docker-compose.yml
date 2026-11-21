@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: keeper
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?}
+      POSTGRES_DB: keeper
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "keeper"]
+      interval: 5s
+      retries: 10
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      POSTGRES_DSN: postgres://keeper:${POSTGRES_PASSWORD}@db:5432/keeper
+      APP_JWT_SECRET: ${APP_JWT_SECRET:?}
+      APP_COOKIE_SECURE: ${APP_COOKIE_SECURE:-true}
+    ports:
+      - "127.0.0.1:${APP_PORT:-8090}:80"
+
+volumes:
+  db-data:

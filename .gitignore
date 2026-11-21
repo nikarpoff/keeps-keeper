@@ -32,3 +32,10 @@ go.work.sum
 # Editor/IDE
 # .idea/
 # .vscode/
+
+# Mocks
+*_moq_test.go
+
+# Web
+node_modules/
+web/dist/
