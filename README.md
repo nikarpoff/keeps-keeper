@@ -1,14 +1,12 @@
 # keeps-keeper
 
-Минималистичные общие заметки в Markdown для небольшой компании друзей: папки, просмотр, редактирование с автосохранением, вход по логину и паролю. У всех пользователей одинаковые права.
+Минималистичные self-hosted общие заметки в Markdown с многопользовательским доступом.
 
 ## Стек
 
 - `server/` — Go, gorilla/mux, pgx, JWT в httpOnly-cookie.
 - `web/` — React + Vite + TypeScript, react-markdown.
 - PostgreSQL 17. Схема применяется при старте сервера (`server/internal/postgres/schema.sql`).
-
-Клиент собирается в тот же образ, сервер раздаёт его как статику.
 
 ## Запуск
 
@@ -17,8 +15,6 @@ cp .env.example .env   # заполнить секреты
 docker compose up -d --build
 docker compose exec app /keeper user add <login>
 ```
-
-Приложение слушает `127.0.0.1:${APP_PORT}`, наружу его публикует reverse proxy с TLS.
 
 ## Пользователи
 
